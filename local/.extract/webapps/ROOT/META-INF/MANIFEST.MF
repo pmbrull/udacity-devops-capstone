@@ -1,7 +1,0 @@
-Manifest-Version: 1.0
-Archiver-Version: Plexus Archiver
-Built-By: teamcity
-Build-Time: 2019-07-25T20:26:12Z
-Created-By: Apache Maven 3.0.5
-Build-Jdk: 1.8.0_201
-
