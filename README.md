@@ -6,6 +6,8 @@ We are going to build a scalable, high-available and fault-tolerant **Data Linea
 
 The purpose of the project is reaching full automation using CI/CD pipelines to ensure fast, continuous and safe delivery of a full containerized tool that lets the user keep track through a web UI of the Data Lineage of Spark jobs. We will use AWS services to create a **Cloud Native** application to that end.
 
+---
+
 ## Technology Background
 
 <details>
@@ -39,12 +41,33 @@ Deployment encapsulate both Replica Sets and Pods, providing a declarative metho
 
 Through the `kubectl` interface, the Deployment will check the current status of the cluster and make it match the desired state specified by the user.
 
+### Stateful Set
+
+Finally, we will introduce another Kubernetes framewoek called **Stateful Set**, used to manage *stateful applications* such as databases. In this [link](http://pauldone.blogspot.com/2017/06/deploying-mongodb-on-kubernetes-gke25.html) I found the best definition of them:
+
+> StatefulSets provides the capabilities of stable unique network hostnames and stable dedicated network storage volume mappings, essential for a database cluster to function properly and for data to exist and outlive the lifetime of inherently ephemeral containers.
+
+
 </details>
 
-
 <details>
-<summary><b>Resources</b></summary>
+<summary><b>MongoDB</b></summary>
+
+MongoDB is a Document Store used by Spline to save the information regarding the Data Lineage that will then be shown in the UI.
+
+We will follow this [documentation](http://k8smongodb.net/) to deploy a MongoDB instance on Kubernetes.
+
+</details>
+
+## First approach
+
+In order to get in touch with the different elements involved in the project, we will start by developing the solution in our local workstation. We will use a Docker container to isolate the environment so that we can test from a clean VM and make all steps easily reproducible.
+
+The contents for this first approach can be found under `local/`, where the `resources` and `scripts` directories are forked from this [repo](https://github.com/pkdone/minikube-mongodb-demo).
+
+---
+
+## Resources
 
 * [Nirmata series on Kubernetes](https://www.nirmata.com/2018/03/03/kubernetes-for-developers-part-2-replica-sets-and-deployments/)
 
-</details>
