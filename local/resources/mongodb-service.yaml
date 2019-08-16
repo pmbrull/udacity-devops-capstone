@@ -8,7 +8,6 @@ spec:
   ports:
   - port: 27017
     targetPort: 27017
-  clusterIP: None
   selector:
     role: mongo
 ---
@@ -87,4 +86,3 @@ spec:
       resources:
         requests:
           storage: 1Gi
-
