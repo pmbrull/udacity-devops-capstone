@@ -1,4 +1,4 @@
-# Data Lineage Orchestration
+# Cloud Native Orchestration
 
 *Capstone project for Udacity's Cloud DevOps Nanodegree*
 
@@ -45,27 +45,6 @@ Finally, we will introduce another Kubernetes framewoek called **Stateful Set**,
 > StatefulSets provides the capabilities of stable unique network hostnames and stable dedicated network storage volume mappings, essential for a database cluster to function properly and for data to exist and outlive the lifetime of inherently ephemeral containers.
 
 </details>
-
-<details>
-<summary><b>MongoDB</b></summary>
-
-MongoDB is a Document Store used by Spline to save the information regarding the Data Lineage that will then be shown in the UI.
-
-We will follow this [documentation](http://k8smongodb.net/) to deploy a MongoDB instance on Kubernetes.
-
-</details>
-
-## First approach
-
-In order to get in touch with the different elements involved in the project, we will start by developing the solution in our local workstation.
-
-The contents for this first approach can be found under `local/`, where the `resources` and `scripts` directories are forked from this [repo](https://github.com/pkdone/minikube-mongodb-demo).
-
-Thus, we will set the Kubernetes **Service** type to **NodePort**, as it is the easiest way to exporte the service. Note that in the repo, the usage is set to ClusterIp, which makes the service reachable only within the cluster.
-
-> More info on Kubernetes exposing services [here](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types)
-
-Then, by running `kubectl describe service mongodb-service` we will get the different endpoints for the 3 replicas, and we will connect the Spline application to those in the form of: `<ip-0>:<nodePort>,<ip-1>:<nodePort>,<ip-2>:<nodePort>`
 
 ---
 
