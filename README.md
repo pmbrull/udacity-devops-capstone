@@ -2,9 +2,6 @@
 
 *Capstone project for Udacity's Cloud DevOps Nanodegree*
 
-We are going to build a scalable, high-available and fault-tolerant **Data Lineage** tool for **Spark** with [Spline](https://absaoss.github.io/spline/) and Kubernetes. To do so, we are going to orchestrate not only the Spline UI tool, but also the underlying MongoDB with Kubernetes.
-
-The purpose of the project is reaching full automation using CI/CD pipelines to ensure fast, continuous and safe delivery of a full containerized tool that lets the user keep track through a web UI of the Data Lineage of Spark jobs. We will use AWS services to create a **Cloud Native** application to that end.
 
 ---
 
@@ -47,7 +44,6 @@ Finally, we will introduce another Kubernetes framewoek called **Stateful Set**,
 
 > StatefulSets provides the capabilities of stable unique network hostnames and stable dedicated network storage volume mappings, essential for a database cluster to function properly and for data to exist and outlive the lifetime of inherently ephemeral containers.
 
-
 </details>
 
 <details>
@@ -61,9 +57,15 @@ We will follow this [documentation](http://k8smongodb.net/) to deploy a MongoDB 
 
 ## First approach
 
-In order to get in touch with the different elements involved in the project, we will start by developing the solution in our local workstation. We will use a Docker container to isolate the environment so that we can test from a clean VM and make all steps easily reproducible.
+In order to get in touch with the different elements involved in the project, we will start by developing the solution in our local workstation.
 
 The contents for this first approach can be found under `local/`, where the `resources` and `scripts` directories are forked from this [repo](https://github.com/pkdone/minikube-mongodb-demo).
+
+Thus, we will set the Kubernetes **Service** type to **NodePort**, as it is the easiest way to exporte the service. Note that in the repo, the usage is set to ClusterIp, which makes the service reachable only within the cluster.
+
+> More info on Kubernetes exposing services [here](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types)
+
+Then, by running `kubectl describe service mongodb-service` we will get the different endpoints for the 3 replicas, and we will connect the Spline application to those in the form of: `<ip-0>:<nodePort>,<ip-1>:<nodePort>,<ip-2>:<nodePort>`
 
 ---
 
