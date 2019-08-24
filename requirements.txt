@@ -2,5 +2,4 @@ Flask
 Flask-SQLAlchemy
 SQLAlchemy
 gunicorn
-psycopg2
 pylint

@@ -1,11 +1,10 @@
-from flask import Flask, render_template, request, jsonify
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask import Flask, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
 from flask.logging import create_logger
 from sqlalchemy import text
 from sqlalchemy.exc import ResourceClosedError
 import logging
 import os
-import json
 
 
 app = Flask(__name__)
@@ -30,10 +29,10 @@ def query():
 
     # Logging the input payload
     json_payload = request.json
-    query = json_payload['query'] 
-    LOG.info(f"Query: \n{query}")
+    db_query = json_payload['query'] 
+    LOG.info(f"Query: \n{db_query}")
     
-    sql = text(query)
+    sql = text(db_query)
     result = db.engine.execute(sql)
 
     try:
