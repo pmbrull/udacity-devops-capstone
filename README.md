@@ -51,8 +51,9 @@ As explained in the [docs](https://kubernetes.io/docs/concepts/storage/persisten
 
 </details>
 
-Test the app:
-* Run docker Postgres: `docker run -p 5432:5432 --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres`
+For any quick modifications to `app.py`, we can test locally by running a postgres Docker container:
+1. Run docker Postgres: `docker run -p 5432:5432 --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres`
+1. Test to run a query with `sh post_query.sh "<my_query>"`
 
 ---
 
