@@ -55,6 +55,9 @@ For any quick modifications to `app.py`, we can test locally by running a postgr
 1. Run docker Postgres: `docker run -p 5432:5432 --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres`
 1. Test to run a query with `sh post_query.sh "<my_query>"`
 
+* Configuration file for the application and scripts, can be found in `scripts/config.sh`.
+* Scripts are prepared to be run from the main repo directory.
+
 ---
 
 ## Resources

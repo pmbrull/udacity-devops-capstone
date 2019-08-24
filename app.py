@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
+from flask.ext.sqlalchemy import SQLAlchemy
 from flask.logging import create_logger
 from sqlalchemy import text
 from sqlalchemy.exc import ResourceClosedError
@@ -49,4 +49,4 @@ def query():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=os.environ.get['PORT'], debug=True)
