@@ -2,6 +2,7 @@
 
 *Capstone project for Udacity's Cloud DevOps Nanodegree*
 
+We will prepare a small API that behaves as a database client. While our DB is completely secure inside the cluster, we can POST queries to the API that will be executed agains the database and give back the results.
 
 ---
 
@@ -44,11 +45,20 @@ Finally, we will introduce another Kubernetes framewoek called **Stateful Set**,
 
 > StatefulSets provides the capabilities of stable unique network hostnames and stable dedicated network storage volume mappings, essential for a database cluster to function properly and for data to exist and outlive the lifetime of inherently ephemeral containers.
 
+### Persistent Volumes
+
+As explained in the [docs](https://kubernetes.io/docs/concepts/storage/persistent-volumes/), `PersistentVolume`s are pieces of storage that will be requested through `PersistentVolumeClaim`s.
+
 </details>
+
+Test the app:
+* Run docker Postgres: `docker run -p 5432:5432 --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres`
 
 ---
 
 ## Resources
 
 * [Nirmata series on Kubernetes](https://www.nirmata.com/2018/03/03/kubernetes-for-developers-part-2-replica-sets-and-deployments/)
+* [Testdriven: Flask + Vue + Kubernetes](https://github.com/testdrivenio/flask-vue-kubernetes)
+* [Flask Postgres Kubernetes Workshop](https://github.com/lihan/flask-postgres-kubernetes-workshop)
 
