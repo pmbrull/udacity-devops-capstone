@@ -58,6 +58,8 @@ For any quick modifications to `app.py`, we can test locally by running a postgr
 * Configuration file for the application and scripts, can be found in `scripts/config.sh`.
 * Scripts are prepared to be run from the main repo directory.
 
+> Note that disabled `ignore-modules=flask_sqlalchemy` on `pylintrc` to disable `E1101` errors due to methods only being available at runtime. Those can't be picked up by pylint and thus it throws ghost errors.
+
 ---
 
 ## Resources

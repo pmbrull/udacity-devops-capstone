@@ -1,0 +1,14 @@
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+spec:
+  rules:
+  - host: pmbrull.k8.flask.com
+    http:
+      paths:
+      - path:
+        backend:
+          serviceName: service-flask-backend
+          servicePort: 5000
