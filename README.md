@@ -60,6 +60,23 @@ For any quick modifications to `app.py`, we can test locally by running a postgr
 
 > Note that disabled `ignore-modules=flask_sqlalchemy` on `pylintrc` to disable `E1101` errors due to methods only being available at runtime. Those can't be picked up by pylint and thus it throws ghost errors.
 
+To test the application in Kubernetes:
+
+* `sh scripts/deploy.sh`
+* `sh scripts/post_query.sh 192.168.99.100 31234 "create table account (id_user serial PRIMARY KEY, username VARCHAR(50) NOT NULL)"` should return `OK`.
+* `sh scripts/post_query.sh 192.168.99.100 31234 "insert into account (username) values ('pmbrull')"` should return `OK`.
+* `sh scripts/post_query.sh 192.168.99.100 31234 "select * from account"` should return
+```
+{
+  "result": [
+    {
+      "id_user": 1, 
+      "username": "pmbrull"
+    }
+  ]
+}
+```
+
 ---
 
 ## Resources

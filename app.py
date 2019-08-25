@@ -1,10 +1,10 @@
-from flask import Flask, request, jsonify
+import logging
+import os
+from flask import Flask, request, jsonify, Response
 from flask_sqlalchemy import SQLAlchemy
 from flask.logging import create_logger
 from sqlalchemy import text
 from sqlalchemy.exc import ResourceClosedError
-import logging
-import os
 
 
 app = Flask(__name__)
@@ -20,6 +20,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://{0}:{1}@{2}'.format(
 )
 db = SQLAlchemy(app)
 
+@app.route('/')
+def index():
+    """Empty homepage"""
+    return Response(status=200)
+
 @app.route("/query", methods=['POST'])
 def query():
     """
@@ -31,7 +36,7 @@ def query():
     json_payload = request.json
     db_query = json_payload['query'] 
     LOG.info(f"Query: \n{db_query}")
-    
+
     sql = text(db_query)
     result = db.engine.execute(sql)
 
