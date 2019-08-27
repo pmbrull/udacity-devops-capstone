@@ -3,11 +3,12 @@ kind: Service
 metadata:
   name: service-flask-backend
 spec:
-  type: NodePort
+  # type: NodePort
+  type: LoadBalancer
   ports:
     - port: 5000
       targetPort: 5000
-      nodePort: 31234
+      # nodePort: 31234
       name: tcp-5000
       protocol: TCP
   selector:

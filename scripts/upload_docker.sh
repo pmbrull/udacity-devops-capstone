@@ -12,7 +12,6 @@ echo "Docker ID and Image: $dockerpath"
 # Get imageId from one tag, e.g., latest
 imageId=$(docker images -q $dockerpath:latest)
 
-docker login -u=$username -p=$docker_pwd
 docker tag $imageId $dockerpath:$version
 
 # Push image to a docker repository

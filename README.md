@@ -77,6 +77,72 @@ To test the application in Kubernetes:
 }
 ```
 
+We enabled a rolling update on the flask app deployment.
+
+## AWS
+
+To work with Kubernetes on AWS, we need the following:
+
+In the Jenkins EC2 instance we need to install:
+* [awscli] and configure with the `kops` user.
+```
+export AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id)
+export AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key)
+```
+* [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+* [kops](https://github.com/kubernetes/kops/blob/master/docs/install.md)
+  These tools will be used to create the cluster and deploy our app.
+
+* Register a domain in **Route 53**. For that, I registered `pmbrull-k8.com` so that I can reach my cluster by name.
+* Create an S3 bucket to store the cluster state & enable versioning.
+* Export cluster variables 
+```
+export NAME=pmbrull-k8.com
+export KOPS_STATE_STORE=s3://pmbrull-k8-com-state-store
+```
+* Create ssh key for the server if we don't have one: `ssh-keygen`.
+* SSH public key must be specified when running with AWS (create with `kops create secret --name pmbrull-k8.com sshpublickey admin -i ~/.ssh/id_rsa.pub`)
+* Then, create the kubernetes cluster with `kops`:
+```
+kops create cluster \
+    --zones us-west-2a \
+    ${NAME}
+```
+* Now we can review the cluster configuration.
+* Finally, build the cluster: `kops update cluster ${NAME} --yes`
+* It will need a few minutes to validate the DNS from the created Route53 domain. Then, we can validate the cluster: `kops validate cluster`.
+* Handshake Jenkins server with the cluster:
+```
+sudo mkdir -p /var/lib/jenkins/.kube
+sudo cp ~/.kube/config /var/lib/jenkins/.kube/
+cd /var/lib/jenkins/.kube/
+sudo chown jenkins:jenkins config
+sudo chmod 750 config
+```
+
+* In Jenkins, store the Docker Hub password as `Secret text` to upload the image.
+
+TODO: Create Jenkinsfile:
+fer tot això al Makefile
+        lint app & Dockerfile
+        build docker
+        
+        configurar credencials
+        stage('login to dockerhub') {
+            withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhubpwd')]) {
+            sh 'docker login -u pmbrull -p ${dockerhubpwd}'
+            }
+        }
+
+        upload to Hub
+        deploy to k8s
+TODO: Create cluster
+TODO: handshake between Jenkins and the cloud infrastructure
+
+
+
+
+
 ---
 
 ## Resources
@@ -84,4 +150,7 @@ To test the application in Kubernetes:
 * [Nirmata series on Kubernetes](https://www.nirmata.com/2018/03/03/kubernetes-for-developers-part-2-replica-sets-and-deployments/)
 * [Testdriven: Flask + Vue + Kubernetes](https://github.com/testdrivenio/flask-vue-kubernetes)
 * [Flask Postgres Kubernetes Workshop](https://github.com/lihan/flask-postgres-kubernetes-workshop)
+* [Kops](https://github.com/kubernetes/kops/blob/master/docs/aws.md)
+* [How to Create a Kubernetes Cluster on AWS in Few Minutes](https://medium.com/containermind/how-to-create-a-kubernetes-cluster-on-aws-in-few-minutes-89dda10354f4)
+* [CI/CD with Jenkins, Docker and Kubernetes on AWS](https://medium.com/@Thegaijin/ci-cd-with-jenkins-docker-and-kubernetes-26932c3a1ea)
 
