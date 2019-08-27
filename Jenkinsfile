@@ -4,7 +4,13 @@ pipeline {
     stage('setup and lint') {
       steps {
         sh """
-           make setup
+           echo ${SHELL}
+           [ -d venv ] && rm -rf venv
+           virtualenv venv
+           . venv/bin/activate
+           export PATH=${VIRTUAL_ENV}/bin:${PATH}
+           pip install --upgrade pip
+           pip install -r requirements.txt
            make lint
            """
       }
