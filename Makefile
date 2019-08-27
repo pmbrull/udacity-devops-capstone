@@ -1,5 +1,4 @@
 setup:
-	virtualenv ~/venv/vdevops
 	source ~/venv/vdevops/bin/activate
 
 install:
