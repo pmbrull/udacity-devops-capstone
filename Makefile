@@ -2,8 +2,7 @@ setup:
 	. /home/ubuntu/venv/vdevops/bin/activate
 
 install:
-	pip install --upgrade pip &&\
-		pip install -r requirements.txt
+	pip install -r requirements.txt
 
 lint:
 	# See local hadolint install instructions: https://github.com/hadolint/hadolint
