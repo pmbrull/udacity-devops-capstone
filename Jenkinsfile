@@ -1,11 +1,6 @@
 pipeline {
-  agent any
+  agent { docker { image 'python:3.7.3' } }
   stages {
-    stage('setup') {
-      steps {
-        sh 'make setup'
-      }
-    }
     stage('install') {
       steps {
         sh 'make install'
