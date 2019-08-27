@@ -1,15 +1,9 @@
 pipeline {
   agent any
-  environment {
-    VIRTUAL_ENV = "${env.WORKSPACE}/venv"
-  }
   stages {
-    stage('setup and lint') {
+    stage('lint') {
       steps {
-        sh """
-           echo '${PATH}'
-           hadolint Dockerfile
-           """
+        sh 'make lint'
       }
     }
     stage('Build Docker') {

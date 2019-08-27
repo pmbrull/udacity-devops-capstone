@@ -1,8 +1,3 @@
-setup:
-	. /home/ubuntu/venv/vdevops/bin/activate
-	pip install --user --upgrade pip
-	pip install --user -r requirements.txt
-
 lint:
 	# See local hadolint install instructions: https://github.com/hadolint/hadolint
 	# This is a linter for Dockerfiles
