@@ -7,8 +7,8 @@ pipeline {
     stage('setup and lint') {
       steps {
         sh """
-           make setup
-           make lint
+           echo '${PATH}'
+           hadolint Dockerfile
            """
       }
     }
