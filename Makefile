@@ -1,5 +1,5 @@
 setup:
-	source ~/venv/vdevops/bin/activate
+	. ~/venv/vdevops/bin/activate
 
 install:
 	pip install --upgrade pip &&\
