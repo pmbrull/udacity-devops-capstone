@@ -1,6 +1,16 @@
 pipeline {
   agent any
   stages {
+    stage('setup') {
+      steps {
+        sh 'make setup'
+      }
+    }
+    stage('install') {
+      steps {
+        sh 'make install'
+      }
+    }
     stage('Lint files') {
       steps {
         sh 'make lint'

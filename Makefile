@@ -1,3 +1,11 @@
+setup:
+	virtualenv ~/venv/vdevops
+	source ~/venv/vdevops/bin/activate
+
+install:
+	pip install --upgrade pip &&\
+		pip install -r requirements.txt
+
 lint:
 	# See local hadolint install instructions: https://github.com/hadolint/hadolint
 	# This is a linter for Dockerfiles
