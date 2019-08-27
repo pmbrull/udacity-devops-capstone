@@ -1,4 +1,5 @@
-install:
+setup:
+	. /home/ubuntu/venv/vdevops/bin/activate
 	pip install -r requirements.txt
 
 lint:

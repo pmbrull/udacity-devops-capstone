@@ -142,6 +142,7 @@ TODO: handshake between Jenkins and the cloud infrastructure
 
 * Finally, delete the cluster `kops delete cluster --name=${NAME} --state=${KOPS_STATE_STORE} --yes`
 
+> Fix docker agent in Jenkinsfile permission error: `sudo chown root:jenkins /run/docker.sock`
 
 ---
 

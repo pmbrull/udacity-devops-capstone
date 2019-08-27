@@ -1,14 +1,12 @@
 pipeline {
-  agent { docker { image 'python:3.7.3' } }
+  agent any
   stages {
-    stage('install') {
+    stage('setup and lint') {
       steps {
-        sh 'make install'
-      }
-    }
-    stage('Lint files') {
-      steps {
-        sh 'make lint'
+        sh """
+           make setup
+           make lint
+           """
       }
     }
     stage('Build Docker') {
