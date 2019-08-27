@@ -1,5 +1,8 @@
 pipeline {
   agent any
+  environment {
+    VIRTUAL_ENV = "${env.WORKSPACE}/venv"
+  }
   stages {
     stage('setup and lint') {
       steps {
