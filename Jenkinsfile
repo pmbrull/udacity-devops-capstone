@@ -12,12 +12,16 @@ pipeline {
       }
     }
     stage('login to dockerhub') {
-      withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhubpwd')]) {
-        sh 'docker login -u pmbrull -p ${dockerhubpwd}'
+      steps {
+        withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhubpwd')]) {
+          sh 'docker login -u pmbrull -p ${dockerhubpwd}'
+        }
       }
     }
     stage('Deploy Kubernetes') {
-      sh 'kubectl apply -f ./kubernetes'
+      steps {
+        sh 'kubectl apply -f ./kubernetes'
+      }
     }
   }
 }
