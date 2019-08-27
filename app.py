@@ -34,8 +34,8 @@ def query():
 
     # Logging the input payload
     json_payload = request.json
-    db_query = json_payload['query'] 
-    LOG.info(f"Query: \n{db_query}")
+    db_query = json_payload['query']
+    LOG.info("Query: \n%s" % json_payload)
 
     sql = text(db_query)
     result = db.engine.execute(sql)
@@ -45,7 +45,7 @@ def query():
     except ResourceClosedError:
         json_result = 'OK'
 
-    LOG.info(f"Results: \n{result}")
+    LOG.info("Results: \n%s" % result)
 
     db.session.commit()
 
