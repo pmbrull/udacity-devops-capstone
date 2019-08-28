@@ -51,16 +51,18 @@ As explained in the [docs](https://kubernetes.io/docs/concepts/storage/persisten
 
 </details>
 
+---
+
 For any quick modifications to `app.py`, we can test locally by running a postgres Docker container:
 1. Run docker Postgres: `docker run -p 5432:5432 --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres`
-1. Test to run a query with `sh post_query.sh "<my_query>"`
+1. Test to run a query with `sh post_query.sh localhost 5000 "<my_query>"`
 
 * Configuration file for the application and scripts, can be found in `scripts/config.sh`.
 * Scripts are prepared to be run from the main repo directory.
 
 > Note that disabled `ignore-modules=flask_sqlalchemy` on `pylintrc` to disable `E1101` errors due to methods only being available at runtime. Those can't be picked up by pylint and thus it throws ghost errors.
 
-To test the application in Kubernetes:
+To test the application in Kubernetes (e.g., `minikube`), first get the IP of the cluster with `minikube ip` and run the following commands:
 
 * `sh scripts/deploy.sh`
 * `sh scripts/post_query.sh 192.168.99.100 31234 "create table account (id_user serial PRIMARY KEY, username VARCHAR(50) NOT NULL)"` should return `OK`.
@@ -77,21 +79,31 @@ To test the application in Kubernetes:
 }
 ```
 
-We enabled a rolling update on the flask app deployment.
+## Deployment type
 
-## AWS
+We enabled a rolling update on the flask app deployment to ensure that we always have available instances, even if they still do not have the new code versions. To do so, in `kubernetes/flask-deployment.yaml`:
+```
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 50%
+      maxSurge: 1
+```
 
-To work with Kubernetes on AWS, we need the following:
+We have two replicas and at maximum, only one will be down updating the images.
+
+## Kubernetes on AWS
 
 In the Jenkins EC2 instance we need to install:
-* [awscli] and configure with the `kops` user.
+* [awscli](https://docs.aws.amazon.com/es_es/cli/latest/userguide/cli-chap-install.html) and configure with the `kops` user.
 ```
 export AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id)
 export AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key)
 ```
-* [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-* [kops](https://github.com/kubernetes/kops/blob/master/docs/install.md)
-  These tools will be used to create the cluster and deploy our app.
+* [kops](https://github.com/kubernetes/kops/blob/master/docs/install.md) - to create the cluster and deploy our app.
+* [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) - to interact with the cluster-
 
 * Register a domain in **Route 53**. For that, I registered `pmbrull-k8.com` so that I can reach my cluster by name.
 * Create an S3 bucket to store the cluster state & enable versioning.
@@ -111,7 +123,7 @@ kops create cluster \
 * Now we can review the cluster configuration.
 * Finally, build the cluster: `kops update cluster ${NAME} --yes`
 * It will need a few minutes to validate the DNS from the created Route53 domain. Then, we can validate the cluster: `kops validate cluster`.
-* Handshake Jenkins server with the cluster:
+* Handshake Jenkins server with the cluster so that we can execute `kubectl` commands directly to `pmbrull-k8.com`:
 ```
 sudo mkdir -p /var/lib/jenkins/.kube
 sudo cp ~/.kube/config /var/lib/jenkins/.kube/
@@ -121,9 +133,21 @@ sudo chmod 750 config
 ```
 
 * In Jenkins, store the Docker Hub password as `Secret text` to upload the image.
-* Finally, delete the cluster `kops delete cluster --name=${NAME} --state=${KOPS_STATE_STORE} --yes`
+* Once we're all finished, delete the cluster `kops delete cluster --name=${NAME} --state=${KOPS_STATE_STORE} --yes`
 
-> Fix docker agent in Jenkinsfile permission error: `sudo chown root:jenkins /run/docker.sock`
+> Fix docker agent in Jenkinsfile permission error: `sudo usermod -aG docker Jenkins`
+
+---
+
+## Screenshots
+
+* **kops-validate-cluster.png**: Shows that after creating the cluster, everything is correctly set and available through the Jenkins server.
+* **kops-cluster.png**: To check that we do have instances running as master and nodes.
+* **jenkins-success.png**: With all the steps of the pipeline succeeding.
+* **lint-step.png**: With the details of the linting step, to check both Python and Dockerfiles.
+* **k8s-services**: With the result of the correct deployment of the kubernetes templates.
+* **load-balancer-service**: Showing the details of the flask service created as a Load Balancer.
+* **test-pmbrull-k8**: Testing the deployed application.
 
 ---
 
