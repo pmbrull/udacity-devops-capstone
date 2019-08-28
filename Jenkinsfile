@@ -1,7 +1,7 @@
 pipeline {
   agent any
   stages {
-    stage('lint') {
+    stage('Lint') {
       steps {
         sh 'make lint'
       }
@@ -11,11 +11,16 @@ pipeline {
         sh 'make build'
       }
     }
-    stage('login to dockerhub') {
+    stage('Login to dockerhub') {
       steps {
         withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhubpwd')]) {
           sh 'docker login -u pmbrull -p ${dockerhubpwd}'
         }
+      }
+    }
+    stage('Upload Image') {
+      steps {
+        sh 'make upload'
       }
     }
     stage('Deploy Kubernetes') {

@@ -121,25 +121,6 @@ sudo chmod 750 config
 ```
 
 * In Jenkins, store the Docker Hub password as `Secret text` to upload the image.
-
-TODO: Create Jenkinsfile:
-fer tot això al Makefile
-        lint app & Dockerfile
-        build docker
-        
-        configurar credencials
-        stage('login to dockerhub') {
-            withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhubpwd')]) {
-            sh 'docker login -u pmbrull -p ${dockerhubpwd}'
-            }
-        }
-
-        upload to Hub
-        deploy to k8s
-TODO: Create cluster
-TODO: handshake between Jenkins and the cloud infrastructure
-
-
 * Finally, delete the cluster `kops delete cluster --name=${NAME} --state=${KOPS_STATE_STORE} --yes`
 
 > Fix docker agent in Jenkinsfile permission error: `sudo chown root:jenkins /run/docker.sock`
